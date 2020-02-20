@@ -94,8 +94,9 @@ def main(_argv):
     writer = tf.io.TFRecordWriter(FLAGS.output_file)
     image_list = []
     for k in class_map.keys():
-      image_list.append(open(os.path.join(
-          FLAGS.data_dir, 'ImageSets', 'Main', k+'_%s.txt' % FLAGS.split)).read().splitlines())
+      tmp = open(os.path.join(
+          FLAGS.data_dir, 'ImageSets', 'Main', k+'_%s.txt' % FLAGS.split)).read().splitlines()
+      image_list.append(tmp)
     logging.info("Image list loaded: %d", len(image_list))
     for image in tqdm.tqdm(image_list):
         name, _ = image.split()
