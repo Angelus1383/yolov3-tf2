@@ -98,14 +98,15 @@ def main(_argv):
           FLAGS.data_dir, 'ImageSets', 'Main', k+'_%s.txt' % FLAGS.split)).read().splitlines()
       image_list.append(tmp)
     logging.info("Image list loaded: %d", len(image_list))
-    for image in tqdm.tqdm(image_list):
-        name, _ = image.split()
-        annotation_xml = os.path.join(
-            FLAGS.data_dir, 'Annotations', name + '.xml')
-        annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
-        annotation = parse_xml(annotation_xml)['annotation']
-        tf_example = build_example(annotation, class_map)
-        writer.write(tf_example.SerializeToString())
+    for image in image_list:
+      for img in image:
+          name, _ = img.split()
+          annotation_xml = os.path.join(
+              FLAGS.data_dir, 'Annotations', name + '.xml')
+          annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
+          annotation = parse_xml(annotation_xml)['annotation']
+          tf_example = build_example(annotation, class_map)
+          writer.write(tf_example.SerializeToString())
     writer.close()
     logging.info("Done")
 
