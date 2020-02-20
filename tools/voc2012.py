@@ -102,7 +102,7 @@ def main(_argv):
       for img in image:
           name, _ = img.split()
           annotation_xml = os.path.join(
-              FLAGS.data_dir, 'Annotations', name + '.xml')
+              FLAGS.data_dir, 'Annotations', os.path.splitext(name)[0] + '.xml')
           annotation_xml = lxml.etree.fromstring(open(annotation_xml).read())
           annotation = parse_xml(annotation_xml)['annotation']
           tf_example = build_example(annotation, class_map)
